@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:32 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/19 16:09:39 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:28:24 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,10 @@ void	ft_childs(t_vars vars, char **argv, char **envp)
 		else if (vars.index == vars.commands_nb - 1)
 			ft_double_dup(vars.pipe[2 * vars.index - 2], vars.outfile);
 		else
-			ft_double_dup(vars.pipe[2 * vars.index - 2], 
+			ft_double_dup(vars.pipe[2 * vars.index - 2],
 				vars.pipe[2 * vars.index + 1]);
 		ft_pipe_close(&vars);
-		vars.cmd_args = ft_split(argv[2 + vars.here_doc + vars.index],
-			 ' ');
+		vars.cmd_args = ft_split(argv[2 + vars.here_doc + vars.index], ' ');
 		vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
 		if (!vars.cmd)
 		{

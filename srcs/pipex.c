@@ -6,21 +6,25 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 20:58:39 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/18 19:55:50 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:41:03 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
+/*	function to find paths in enviroment	*/
+
 char	*ft_path_search(char **envp)
 {
 	int	i;
-	
+
 	i = 0;
 	while (ft_strncmp("PATH=", envp[i], 5))
 		i++;
 	return (envp[i] + 5);
 }
+
+/*	Function to close pipes	*/
 
 void	ft_close_pipes(t_vars *vars)
 {
@@ -28,12 +32,22 @@ void	ft_close_pipes(t_vars *vars)
 	close(vars->tube[1]);
 }
 
+/*	Main function:
+	1.- It checks arguments.
+	2.- It checks if enviroment is provided in arguments and manage it if so.
+	3.- It gets the command paths.
+	4.- It makes a fork;
+		a)	The child will manage the firs command.
+		b)	The parent makes another fork.
+			-	The (second) child manage ethe second command.
+			-	The (second) parent will free memory and finish the program	*/
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_vars	vars;
 
 	if (argc != 5)
-		return (ft_print_message("Arguments: Invalid number.\n"));
+		return (ft_message("Arguments: Invalid number.\n"));
 	vars.infile = open(argv[1], O_RDONLY);
 	if (vars.infile < 0)
 		ft_error("Arguments: Infile Error.\n");
@@ -44,15 +58,15 @@ int	main(int argc, char *argv[], char *envp[])
 		ft_error("Creating Pipe Error.\n");
 	vars.paths = ft_path_search(envp);
 	vars.cmd_paths = ft_split(vars.paths, ':');
-	vars.pid1 = fork();
-	if (vars.pid1 == 0)
+	vars.pid_one = fork();
+	if (vars.pid_one == 0)
 		ft_first_child(vars, argv, envp);
-	vars.pid2 = fork();
-	if (vars.pid2 == 0)
+	vars.pid_two = fork();
+	if (vars.pid_two == 0)
 		ft_second_child(vars, argv, envp);
 	ft_close_pipes(&vars);
-	waitpid(vars.pid1, 0, 0);
-	waitpid(vars.pid2, 0, 0);
+	if (waitpid(vars.pid_one, 0, 0) < 0 || waitpid(vars.pid_two, 0, 0) < 0)
+		return (-1);
 	ft_parent_free(&vars);
 	return (0);
 }

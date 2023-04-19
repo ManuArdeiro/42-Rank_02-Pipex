@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:29:52 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/19 16:13:01 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/19 20:45:54 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int argc, char *argv[], char *envp[])
 	vars.pipes_nb = 2 * (vars.commands_nb - 1);
 	vars.pipe = (int *)malloc(sizeof(int) * vars.pipes_nb);
 	if (!vars.pipe)
-		ft_error("Pipe error.\n");
+		ft_error("Mem reservation error.\n");
 	vars.paths = ft_path_search(envp);
 	vars.cmd_paths = ft_split(vars.paths, ':');
 	if (!vars.cmd_paths)

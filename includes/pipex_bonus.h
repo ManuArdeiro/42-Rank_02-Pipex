@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:30:46 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/19 16:08:36 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/19 18:28:54 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,13 @@
 # include <stdio.h>
 
 /* to get_next_line */
-# include "./42_gnl/gnl.h"
+# include "./42_gnl/get_next_line.h"
 
 //	ft_printf
 # include "./42_ft_printf/includes/ft_printf.h"
 
 //	ft_libft
 # include "./42_libft/libft.h"
-
 
 typedef struct s_vars
 {

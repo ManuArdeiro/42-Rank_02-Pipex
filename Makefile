@@ -6,13 +6,13 @@
 #    By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 20:30:47 by jolopez-          #+#    #+#              #
-#    Updated: 2023/04/19 16:13:26 by jolopez-         ###   ########.fr        #
+#    Updated: 2023/04/19 20:00:39 by jolopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		=	pipex
 
-BONUS_NAME	=	pipex_bonus
+BONUS_NAME	=	pipex
 
 SRCS 		= 	srcs/childs.c \
 				srcs/pipex.c \
@@ -30,7 +30,7 @@ BONUS_OBJS	= $(SRCS_BONUS:%.c=%.o)
 
 INC 		= -I./includes/
 
-LIBS		= ./includes/42_libft/libft.a ./includes/42_ft_printf/libftprintf.a ./includes/42_gnl/gnl.a
+LIBS		= ./includes/42_libft/libft.a ./includes/42_ft_printf/libftprintf.a ./includes/42_gnl/libgnl.a
 
 CC = 		gcc
 

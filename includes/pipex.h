@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:48:42 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/19 01:55:03 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/19 19:59:19 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # include <stdio.h>
 
 //	get_next_line
-# include "./42_gnl/gnl.h"
+# include "./42_gnl/get_next_line.h"
 
 //	ft_printf
 # include "./42_ft_printf/includes/ft_printf.h"
@@ -44,8 +44,8 @@
 
 typedef struct s_vars
 {
-	pid_t	pid1;
-	pid_t	pid2;
+	pid_t	pid_one;
+	pid_t	pid_two;
 	int		infile;
 	int		outfile;
 	int		tube[2];

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:58:40 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/18 19:03:15 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/19 19:57:53 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
 		free(vars.cmd);
-		ft_print_message("Command: Unknow command.\n");
+		ft_message("Command: Unknow command.\n");
 		exit(-1);
 	}
 	execve(vars.cmd, vars.cmd_args, envp);
@@ -55,7 +55,7 @@ void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 void	ft_second_child(t_vars vars, char *argv[], char *envp[])
 {
 	int	i;
-	
+
 	i = -1;
 	dup2(vars.tube[0], STDIN_FILENO);
 	close(vars.tube[1]);
@@ -68,7 +68,7 @@ void	ft_second_child(t_vars vars, char *argv[], char *envp[])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
 		free(vars.cmd);
-		ft_print_message("Command: Unknow command.\n");
+		ft_message("Command: Unknow command.\n");
 		exit(-1);
 	}
 	execve(vars.cmd, vars.cmd_args, envp);

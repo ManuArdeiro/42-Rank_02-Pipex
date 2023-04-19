@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 19:32:52 by jolopez-          #+#    #+#             */
-/*   Updated: 2022/04/01 18:52:17 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/18 20:01:44 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,3 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (cmp_char(s1[i], s2[i]));
 	return (0);
 }
-
-/*int	main(void)
-{
-	unsigned long 	i1, i2, i3;
-	char	*s1 = "\x12\xff\x65\x12\xbd\xde\xad";
-	char	*s2 = "\x12\x03";
-
-	i3 = 6;
-	i1 = strncmp(s1, s2, i3);
-	i2 = ft_strncmp(s1, s2, i3);
-	printf ("strncmp result = %lu \nft_strncmp result = %lu \n", i1, i2);
-	return (0);
-}*/

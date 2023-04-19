@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:48:42 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/13 19:16:05 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/19 01:55:03 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,40 +42,32 @@
 //	ft_libft
 # include "./42_libft/libft.h"
 
-# define ERR_INFILE "Infile Error"
-# define ERR_OUTFILE "Outfile Error"
-# define ERR_INPUT "Invalid number of arguments.\n"
-# define ERR_PIPE "Pipe Error"
-# define ERR_CMD "Command not found\n"
-
-typedef struct s_pipex
+typedef struct s_vars
 {
 	pid_t	pid1;
 	pid_t	pid2;
-	int		tube[2];
 	int		infile;
 	int		outfile;
+	int		tube[2];
 	char	*paths;
 	char	*cmd;
 	char	**cmd_paths;
 	char	**cmd_args;
-}t_pipex;
+}t_vars;
 
-//	childs.c
-void	ft_first_child(t_pipex pipex, char *argv[], char *envp[]);
-void	ft_second_child(t_pipex pipex, char *argv[], char *envp[]);
+//		childs.c
+char	*ft_cmd_const(char **paths, char *cmd);
+void	ft_first_child(t_vars vars, char *argv[], char *envp[]);
+void	ft_second_child(t_vars vars, char *argv[], char *envp[]);
 
-//	free.c 
-void	ft_parent_free(t_pipex *pipex);
-void	ft_child_free(t_pipex *pipex);
-
-//	error.c
-void	ft_error(char *err);
-int		ft_msg(char *err);
-
-//	pipex.c
-char	*ft_find_path(char **envp);
-void	ft_close_pipes(t_pipex *pipex);
+//		pipex.c
+char	*ft_path_search(char **envp);
+void	ft_close_pipes(t_vars *vars);
 int		main(int argc, char *argv[], char *envp[]);
+
+//		tools.c
+int		ft_message(char *message);
+void	ft_error(char *error);
+void	ft_parent_free(t_vars *vars);
 
 #endif

@@ -3,59 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   child_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcaffere <bcaffere@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/13 17:37:04 by bcaffere          #+#    #+#             */
-/*   Updated: 2021/10/13 21:56:55 by bcaffere         ###   ########.fr       */
+/*   Created: 2023/04/18 17:32:32 by jolopez-          #+#    #+#             */
+/*   Updated: 2023/04/19 16:09:39 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../../includes/pipex_bonus.h"
 
-static char	*get_cmd(char **paths, char *cmd)
+char	*ft_cmd_const(char **paths, char *cmd)
 {
-	char	*tmp;
-	char	*command;
+	char	*path;
+	char	*complete;
 
 	while (*paths)
 	{
-		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(command, 0) == 0)
-			return (command);
-		free(command);
+		path = ft_strjoin(*paths, "/");
+		complete = ft_strjoin(path, cmd);
+		free(path);
+		if (access(complete, 0) == 0)
+			return (complete);
+		free(complete);
 		paths++;
 	}
-	return (NULL);
+	return (0);
 }
 
-static void	sub_dup2(int zero, int first)
+void	ft_double_dup(int zero, int one)
 {
 	dup2(zero, 0);
-	dup2(first, 1);
+	dup2(one, 1);
 }
 
-void	child(t_ppxb p, char **argv, char **envp)
+void	ft_childs(t_vars vars, char **argv, char **envp)
 {
-	p.pid = fork();
-	if (!p.pid)
+	vars.pid = fork();
+	if (!vars.pid)
 	{
-		if (p.idx == 0)
-			sub_dup2(p.infile, p.pipe[1]);
-		else if (p.idx == p.cmd_nmbs - 1)
-			sub_dup2(p.pipe[2 * p.idx - 2], p.outfile);
+		if (vars.index == 0)
+			ft_double_dup(vars.infile, vars.pipe[1]);
+		else if (vars.index == vars.commands_nb - 1)
+			ft_double_dup(vars.pipe[2 * vars.index - 2], vars.outfile);
 		else
-			sub_dup2(p.pipe[2 * p.idx - 2], p.pipe[2 * p.idx + 1]);
-		close_pipes(&p);
-		p.cmd_args = ft_split(argv[2 + p.here_doc + p.idx], ' ');
-		p.cmd = get_cmd(p.cmd_paths, p.cmd_args[0]);
-		if (!p.cmd)
+			ft_double_dup(vars.pipe[2 * vars.index - 2], 
+				vars.pipe[2 * vars.index + 1]);
+		ft_pipe_close(&vars);
+		vars.cmd_args = ft_split(argv[2 + vars.here_doc + vars.index],
+			 ' ');
+		vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
+		if (!vars.cmd)
 		{
-			msg_pipe(p.cmd_args[0]);
-			child_free(&p);
-			exit(1);
+			printf("Command not found: %s\n", vars.cmd_args[0]);
+			ft_free_childs(&vars);
+			exit(-1);
 		}
-		execve(p.cmd, p.cmd_args, envp);
+		execve(vars.cmd, vars.cmd_args, envp);
 	}
 }

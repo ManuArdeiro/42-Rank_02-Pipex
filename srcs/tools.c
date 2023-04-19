@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_bonus.c                                      :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcaffere <bcaffere@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:43:45 by bcaffere          #+#    #+#             */
-/*   Updated: 2021/10/13 20:59:21 by bcaffere         ###   ########.fr       */
+/*   Updated: 2023/04/18 20:08:19 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../includes/pipex.h"
 
-int	msg(char *err)
+int	ft_message(char *message)
 {
-	write(2, err, ft_strlen(err));
-	return (1);
+	write(STDERR_FILENO, message, ft_strlen(message));
+	return (-1);
 }
 
-void	msg_pipe(char *arg)
+void	ft_error(char *error)
 {
-	write(2, ERR_CMD, ft_strlen(ERR_CMD));
-	write(2, arg, ft_strlen(arg));
-	write(2, "\n", 1);
+	perror(error);
+	exit (-1);
 }
 
-void	msg_error(char *err)
+void	ft_parent_free(t_vars *vars)
 {
-	perror(err);
-	exit (1);
+	int	i;
+
+	i = 0;
+	close(vars->infile);
+	close(vars->outfile);
+	while (vars->cmd_paths[i])
+	{
+		free(vars->cmd_paths[i]);
+		i++;
+	}
+	free(vars->cmd_paths);
 }

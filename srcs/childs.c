@@ -6,58 +6,70 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:58:40 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/13 21:24:43 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/18 19:03:15 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-static char	*ft_get_cmd(char **paths, char *cmd)
+char	*ft_cmd_const(char **paths, char *command)
 {
-	char	*tmp;
-	char	*command;
+	char	*path;
+	char	*complete;
 
 	while (*paths)
 	{
-		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(command, 0) == 0)
-			return (command);
-		free(command);
+		path = ft_strjoin(*paths, "/");
+		complete = ft_strjoin(path, command);
+		free(path);
+		if (access(complete, 0) == 0)
+			return (complete);
+		free(complete);
 		paths++;
 	}
 	return (0);
 }
 
-void	ft_first_child(t_pipex pipex, char *argv[], char *envp[])
+void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 {
-	dup2(pipex.tube[1], 1);
-	close(pipex.tube[0]);
-	dup2(pipex.infile, 0);
-	pipex.cmd_args = ft_split(argv[2], ' ');
-	pipex.cmd = ft_get_cmd(pipex.cmd_paths, pipex.cmd_args[0]);
-	if (!pipex.cmd)
+	int	i;
+
+	i = -1;
+	dup2(vars.tube[1], STDOUT_FILENO);
+	close(vars.tube[0]);
+	dup2(vars.infile, STDIN_FILENO);
+	vars.cmd_args = ft_split(argv[2], ' ');
+	vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
+	if (!vars.cmd)
 	{
-		ft_child_free(&pipex);
-		ft_msg(ERR_CMD);
+		while (vars.cmd_args[++i])
+			free(vars.cmd_args[i]);
+		free(vars.cmd_args);
+		free(vars.cmd);
+		ft_print_message("Command: Unknow command.\n");
 		exit(-1);
 	}
-	execve(pipex.cmd, pipex.cmd_args, envp);
+	execve(vars.cmd, vars.cmd_args, envp);
 }
 
-void	ft_second_child(t_pipex pipex, char *argv[], char *envp[])
+void	ft_second_child(t_vars vars, char *argv[], char *envp[])
 {
-	dup2(pipex.tube[0], 0);
-	close(pipex.tube[1]);
-	dup2(pipex.outfile, 1);
-	pipex.cmd_args = ft_split(argv[3], ' ');
-	pipex.cmd = ft_get_cmd(pipex.cmd_paths, pipex.cmd_args[0]);
-	if (!pipex.cmd)
+	int	i;
+	
+	i = -1;
+	dup2(vars.tube[0], STDIN_FILENO);
+	close(vars.tube[1]);
+	dup2(vars.outfile, STDOUT_FILENO);
+	vars.cmd_args = ft_split(argv[3], ' ');
+	vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
+	if (!vars.cmd)
 	{
-		ft_child_free(&pipex);
-		ft_msg(ERR_CMD);
-		exit(1);
+		while (vars.cmd_args[++i])
+			free(vars.cmd_args[i]);
+		free(vars.cmd_args);
+		free(vars.cmd);
+		ft_print_message("Command: Unknow command.\n");
+		exit(-1);
 	}
-	execve(pipex.cmd, pipex.cmd_args, envp);
+	execve(vars.cmd, vars.cmd_args, envp);
 }

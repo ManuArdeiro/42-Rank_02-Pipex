@@ -3,54 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcaffere <bcaffere@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/13 16:03:19 by bcaffere          #+#    #+#             */
-/*   Updated: 2021/10/13 16:13:17 by bcaffere         ###   ########.fr       */
+/*   Created: 2023/04/18 17:33:11 by jolopez-          #+#    #+#             */
+/*   Updated: 2023/04/19 16:11:57 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../../includes/pipex_bonus.h"
 
-int	args_in(char *arg, t_ppxb *pipex)
+int	ft_here_doc_arg(char *arg_one, t_vars *vars)
 {
-	if (arg && !ft_strncmp("here_doc", arg, 9))
+	if (arg_one && !ft_strncmp("here_doc", arg_one, 9))
 	{
-		pipex->here_doc = 1;
+		vars->here_doc = 1;
 		return (6);
 	}
 	else
 	{
-		pipex->here_doc = 0;
+		vars->here_doc = 0;
 		return (5);
 	}
 }
 
-void	here_doc(char *argv, t_ppxb *pipex)
+void	ft_here_doc(char *infile, t_vars *vars)
 {
 	int		file;
-	char	*buf;
+	char	*line;
 
-	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0000644);
+	line = 0;
+	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 00644);
 	if (file < 0)
-		msg_error(ERR_HEREDOC);
+		ft_error("here_doc error.\n");
 	while (1)
 	{
 		write(1, "heredoc> ", 9);
-		if (get_next_line(0, &buf) < 0)
-			exit(1);
-		if (!ft_strncmp(argv, buf, ft_strlen(argv) + 1))
+		if (ft_gnl(0, line) < 0)
+			exit(-1);
+		if (!ft_strncmp(infile, line, ft_strlen(infile) + 1))
 			break ;
-		write(file, buf, ft_strlen(buf));
+		write(file, line, ft_strlen(line));
 		write(file, "\n", 1);
-		free(buf);
+		free(line);
 	}
-	free(buf);
+	free(line);
 	close(file);
-	pipex->infile = open(".heredoc_tmp", O_RDONLY);
-	if (pipex->infile < 0)
+	vars->infile = open(".heredoc_tmp", O_RDONLY);
+	if (vars->infile < 0)
 	{
 		unlink(".heredoc_tmp");
-		msg_error(ERR_HEREDOC);
+		ft_message("here_doc error.\n");
 	}
 }

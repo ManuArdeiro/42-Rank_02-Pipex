@@ -6,7 +6,7 @@
 #    By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 20:30:47 by jolopez-          #+#    #+#              #
-#    Updated: 2023/04/12 20:56:22 by jolopez-         ###   ########.fr        #
+#    Updated: 2023/04/19 16:13:26 by jolopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,24 +15,22 @@ NAME 		=	pipex
 BONUS_NAME	=	pipex_bonus
 
 SRCS 		= 	srcs/childs.c \
-				srcs/error.c \
-				srcs/free.c \
-				srcs/pipez.c \
+				srcs/pipex.c \
+				srcs/tools.c
 
 SRCS_BONUS	=	srcs/bonus/child_bonus.c \
-				srcs/bonus/error_bonus.c \
 				srcs/bonus/files_bonus.c \
-				srcs/bonus/free_bonus.c \
 				srcs/bonus/here_doc_bonus.c \
-				srcs/bonus/pipex_bonus.c
+				srcs/bonus/pipex_bonus.c \
+				srcs/bonus/tools_bonus.c
 
 OBJS		= $(SRCS:%.c=%.o)
 
 BONUS_OBJS	= $(SRCS_BONUS:%.c=%.o)
 
-INC 		= -I ./includes/
+INC 		= -I./includes/
 
-LIBS		= ./includes/42_libft/libft.a ./includes/42_ft_printf/libftprintf.a
+LIBS		= ./includes/42_libft/libft.a ./includes/42_ft_printf/libftprintf.a ./includes/42_gnl/gnl.a
 
 CC = 		gcc
 
@@ -45,6 +43,8 @@ $(NAME):	$(OBJS)
 			cd ./includes/42_libft && make
 			@echo "$(LIGHT_RED) Creating ft_printf files... $(WHITE)"
 			cd ./includes/42_ft_printf && make bonus
+			@echo "$(LIGHT_RED) Creating gnl files... $(WHITE)"
+			cd ./includes/42_gnl && make
 			@echo "$(YELLOW) Creating pipex... $(WHITE)"
 			${CC} $(CFLAGS) -o ${NAME} $(OBJS) ${LIBS}
 			@echo "$(GREEN) Done..."			
@@ -54,7 +54,9 @@ bonus:		$(BONUS_OBJS)
 			make -C includes/42_libft
 			@echo "$(LIGHT_RED) Creating ft_printf files... $(WHITE)"
 			make -C includes/42_ft_printf
-			@echo "$(YELLOW) Creating so_long with enemies... $(WHITE)"
+			@echo "$(LIGHT_RED) Creating gnl files... $(WHITE)"
+			cd ./includes/42_gnl && make
+			@echo "$(YELLOW) Creating pipex with bonus... $(WHITE)"
 			${CC} $(CFLAGS) -o ${BONUS_NAME} ${BONUS_OBJS} ${LIBS}
 			@echo "$(GREEN) Done..."			
 
@@ -63,16 +65,20 @@ clean:
 			make clean -C includes/42_libft
 			@echo "$(LIGHT_RED) Cleaning ft_printf objects... $(WHITE)"
 			make clean -C includes/42_ft_printf
-			@echo "$(LIGHT_RED) Cleaning objects.. $(WHITE)"
+			@echo "$(LIGHT_RED) Cleaning gnl objects.. $(WHITE)"
+			make clean -C includes/42_gnl
+			@echo "$(LIGHT_RED) Cleaning pipex objects.. $(WHITE)"
 			/bin/rm -rf $(OBJS) $(BONUS_OBJS)
 			@echo "$(LIGHT_RED) Done!! $(WHITE)"
 
-fclean: 	clean
+fclean: 	
 			@echo "$(LIGHT_RED) Cleaning all from libft... $(WHITE)"
 			cd ./includes/42_libft && make fclean 
 			@echo "$(LIGHT_RED) Cleaning all from ft_printf... $(WHITE)"
-			cd ./includes/42_ft_printf && make fclean 
-			@echo "$(LIGHT_RED) Cleaning all... $(WHITE)"
+			cd ./includes/42_ft_printf && make fclean
+			@echo "$(LIGHT_RED) Cleaning all from gnl... $(WHITE)"
+			cd ./includes/42_gnl && make fclean 
+			@echo "$(LIGHT_RED) Cleaning all from pipex... $(WHITE)"
 			/bin/rm -rf $(NAME) $(BONUS_NAME)
 			@echo "$(LIGHT_RED) Done!! $(WHITE)"
 

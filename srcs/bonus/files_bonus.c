@@ -3,40 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   files_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcaffere <bcaffere@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/13 16:14:14 by bcaffere          #+#    #+#             */
-/*   Updated: 2021/10/13 16:15:17 by bcaffere         ###   ########.fr       */
+/*   Created: 2023/04/18 17:32:50 by jolopez-          #+#    #+#             */
+/*   Updated: 2023/04/19 01:04:17 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../../includes/pipex_bonus.h"
 
-char	*find_path(char **envp)
+char	*ft_path_search(char **envp)
 {
 	while (ft_strncmp("PATH", *envp, 4))
 		envp++;
 	return (*envp + 5);
 }
 
-void	get_infile(char **argv, t_ppxb *pipex)
+void	ft_infile(char **argv, t_vars *vars)
 {
 	if (!ft_strncmp("here_doc", argv[1], 9))
-		here_doc(argv[2], pipex);
+		ft_here_doc(argv[2], vars);
 	else
 	{
-		pipex->infile = open(argv[1], O_RDONLY);
-		if (pipex->infile < 0)
-			msg_error(ERR_INFILE);
+		vars->infile = open(argv[1], O_RDONLY);
+		if (vars->infile < 0)
+			ft_error("Infile error.\n");
 	}
 }
 
-void	get_outfile(char *argv, t_ppxb *pipex)
+void	ft_outfile(char *outfile, t_vars *vars)
 {
-	if (pipex->here_doc)
-		pipex->outfile = open(argv, O_WRONLY | O_CREAT | O_APPEND, 0000644);
+	if (vars->here_doc)
+		vars->outfile = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 00644);
 	else
-		pipex->outfile = open(argv, O_CREAT | O_RDWR | O_TRUNC, 0000644);
-	if (pipex->outfile < 0)
-		msg_error(ERR_OUTFILE);
+		vars->outfile = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 00644);
+	if (vars->outfile < 0)
+		ft_error("Outfile error.\n");
 }

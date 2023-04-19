@@ -48,7 +48,7 @@ $(NAME):	$(OBJS) $(MAIN_OBJS)
 			@echo "$(YELLOW) Creating library... $(WHITE)"
 			ar -rcs $(NAME) $(OBJS) $(MAIN_OBJS)
 			
-bonus:		fclean $(OBJS) $(BONUS_OBJS)
+bonus:		$(OBJS) $(BONUS_OBJS)
 			@echo "$(YELLOW) Creating bonus library... $(WHITE)"
 			ar -rcs $(NAME) $(OBJS) $(BONUS_OBJS)
 			@echo "$(GREEN) Done..."			

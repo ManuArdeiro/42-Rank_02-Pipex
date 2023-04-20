@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:58:40 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/19 19:57:53 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/20 17:20:38 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 		while (vars.cmd_args[++i])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
+		free(vars.paths);
 		free(vars.cmd);
-		ft_message("Command: Unknow command.\n");
+		ft_message("Command not found.");
 		exit(-1);
 	}
 	execve(vars.cmd, vars.cmd_args, envp);
@@ -67,8 +68,9 @@ void	ft_second_child(t_vars vars, char *argv[], char *envp[])
 		while (vars.cmd_args[++i])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
+		free(vars.paths);
 		free(vars.cmd);
-		ft_message("Command: Unknow command.\n");
+		ft_message("Command not found.");
 		exit(-1);
 	}
 	execve(vars.cmd, vars.cmd_args, envp);

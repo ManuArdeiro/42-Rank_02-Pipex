@@ -6,22 +6,26 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:40 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/19 16:06:38 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:46:39 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
 
-int	ft_message(char *message)
+/*	Function to print an error message and return 1. */
+
+int	ft_message(int msg_nb, char *msg_text)
 {
-	write(2, message, ft_strlen(message));
-	return (-1);
+	write(STDERR_FILENO, msg_text, ft_strlen(msg_text));
+	return (msg_nb);
 }
 
-void	ft_error(char *error)
+/*	Function to print an error message and exit (with 1). */
+
+void	ft_error(int error_nb, char *error_text)
 {
-	perror(error);
-	exit (-1);
+	perror(error_text);
+	exit (error_nb);
 }
 
 void	ft_free_parents(t_vars *vars)

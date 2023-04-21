@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:30:46 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/19 18:28:54 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:46:52 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int		ft_here_doc_arg(char *arg_one, t_vars *vars);
 void	ft_here_doc(char *argv, t_vars *vars);
 
 //		tools_bonus.c
-int		ft_message(char *message);
-void	ft_error(char *error);
+int		ft_message(int msg_nb, char *msg_text);
+void	ft_error(int error_nb, char *error_text);
 void	ft_free_parents(t_vars *vars);
 void	ft_free_childs(t_vars *vars);
 void	ft_free_mem(t_vars *vars);

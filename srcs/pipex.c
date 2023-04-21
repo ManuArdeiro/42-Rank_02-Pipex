@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 20:58:39 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/20 01:56:02 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/21 21:05:35 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,9 @@ int	main(int argc, char *argv[], char *envp[])
 	t_vars	vars;
 
 	if (argc != 5)
-		return (ft_message("Invalid number of arguments.\n"));
-	vars.infile = open(argv[1], O_RDONLY);
-	if (vars.infile < 0)
-		ft_error("infile");
-	vars.outfile = open(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR, 00644);
-	if (vars.outfile < 0)
-		ft_error("outfile");
+		return (ft_message(EXIT_FAILURE, "Invalid number of arguments.\n"));
 	if (pipe(vars.tube) < 0)
-		ft_error("pipe");
+		ft_error(EXIT_FAILURE, "pipe");
 	vars.paths = ft_path_search(envp);
 	vars.cmd_paths = ft_split(vars.paths, ':');
 	vars.pid_one = fork();
@@ -63,7 +57,7 @@ int	main(int argc, char *argv[], char *envp[])
 		ft_first_child(vars, argv, envp);
 	vars.pid_two = fork();
 	if (vars.pid_two == 0)
-		ft_second_child(vars, argv, envp);
+		ft_second_child(vars, argc, argv, envp);
 	ft_close_pipes(&vars);
 	if (waitpid(vars.pid_one, 0, 0) < 0 || waitpid(vars.pid_two, 0, 0) < 0)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:58:40 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/20 17:20:38 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/21 21:20:15 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 	int	i;
 
 	i = -1;
+	vars.infile = open(argv[1], O_RDONLY);
+	if (vars.infile < 0)
+		ft_message(EXIT_SUCCESS,
+			ft_strjoin("no such file or directory: ", (char *)argv[1]));
 	dup2(vars.tube[1], STDOUT_FILENO);
 	close(vars.tube[0]);
 	dup2(vars.infile, STDIN_FILENO);
@@ -45,19 +49,21 @@ void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 		while (vars.cmd_args[++i])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
-		free(vars.paths);
 		free(vars.cmd);
-		ft_message("Command not found.");
-		exit(-1);
+		exit(ft_message(EXIT_SUCCESS,
+				ft_strjoin("command not found: ", (char *)argv[1])));
 	}
 	execve(vars.cmd, vars.cmd_args, envp);
 }
 
-void	ft_second_child(t_vars vars, char *argv[], char *envp[])
+void	ft_second_child(t_vars vars, int argc, char *argv[], char *envp[])
 {
 	int	i;
 
 	i = -1;
+	vars.outfile = open(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR, 00644);
+	if (vars.outfile < 0)
+		ft_message(127, "21");
 	dup2(vars.tube[0], STDIN_FILENO);
 	close(vars.tube[1]);
 	dup2(vars.outfile, STDOUT_FILENO);
@@ -68,10 +74,9 @@ void	ft_second_child(t_vars vars, char *argv[], char *envp[])
 		while (vars.cmd_args[++i])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
-		free(vars.paths);
 		free(vars.cmd);
-		ft_message("Command not found.");
-		exit(-1);
+		exit (ft_message(127,
+				ft_strjoin("command not found: ", (char *)argv[argc - 1])));
 	}
 	execve(vars.cmd, vars.cmd_args, envp);
 }

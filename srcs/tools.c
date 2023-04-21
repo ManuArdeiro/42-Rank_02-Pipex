@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:43:45 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/20 17:17:44 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/21 21:07:35 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 /*	Function to print an error message and return 1. */
 
-int	ft_message(char *message)
+int	ft_message(int msg_nb, char *msg_text)
 {
-	write(STDERR_FILENO, message, ft_strlen(message));
-	return (1);
+	write(STDERR_FILENO, msg_text, ft_strlen(msg_text));
+	return (msg_nb);
 }
 
 /*	Function to print an error message and exit (with 1). */
 
-void	ft_error(char *error)
+void	ft_error(int error_nb, char *error_text)
 {
-	perror(error);
-	exit (1);
+	perror(error_text);
+	exit (error_nb);
 }
 
 /*	This function frees allocated memory (cmd_paths in struct vars)
@@ -38,10 +38,10 @@ void	ft_parent_free(t_vars *vars)
 	i = 0;
 	close(vars->infile);
 	close(vars->outfile);
-	while (vars->cmd_paths[i])
+/*	while (vars->cmd_paths[i])
 	{
 		free(vars->cmd_paths[i]);
 		i++;
-	}
+	}*/
 	free(vars->cmd_paths);
 }

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 20:58:39 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/23 14:17:57 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/24 19:35:47 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ char	*ft_path_search(char **envp)
 	int	i;
 
 	i = 0;
-	while (ft_strncmp("PATH=", envp[i], 5))
-		i++;
-	return (envp[i] + 5);
+	while (envp[i])
+	{
+		while (ft_strncmp("PATH=", envp[i], 5))
+			i++;
+		return (envp[i] + 5);
+	}
+	return (0);
 }
 
 /*	Function to close pipes	*/
@@ -55,12 +59,12 @@ int	main(int argc, char *argv[], char *envp[])
 	vars.pid_one = fork();
 	if (vars.pid_one == 0)
 		ft_first_child(vars, argv, envp);
-	if (waitpid(vars.pid_one, 0, 0) < 0)
-		return (1);
 	vars.pid_two = fork();
 	if (vars.pid_two == 0)
 		ft_second_child(vars, argc, argv, envp);
 	ft_close_pipes(&vars);
+	if (waitpid(vars.pid_one, 0, 0) < 0)
+		return (1);
 	if (waitpid(vars.pid_two, 0, 0) < 0)
 		return (1);
 	ft_parent_free(&vars);

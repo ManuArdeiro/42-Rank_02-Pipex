@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 13:23:15 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/12 20:27:36 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/24 19:09:43 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,18 @@ static int	ft_count_parts(const char *s, char c)
 
 	parts = 0;
 	i = 0;
-	while (s[i] != '\0')
+	while (s)
 	{
-		if ((s[i + 1] == c || s[i + 1] == '\0') && !(s[i] == c || s[i] == '\0'))
-			parts++;
-		i++;
+		while (s[i] != '\0')
+		{
+			if ((s[i + 1] == c || s[i + 1] == '\0')
+				&& !(s[i] == c || s[i] == '\0'))
+				parts++;
+			i++;
+		}
+		return (parts);
 	}
-	return (parts);
+	return (0);
 }
 
 static void	ft_write_part(char **split, const char *s_part, char c, int part)

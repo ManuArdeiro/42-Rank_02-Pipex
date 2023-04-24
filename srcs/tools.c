@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:43:45 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/21 21:07:35 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/22 12:58:47 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int	ft_message(int msg_nb, char *msg_text)
 {
-	write(STDERR_FILENO, msg_text, ft_strlen(msg_text));
+	perror(msg_text);
 	return (msg_nb);
 }
 
@@ -33,9 +33,6 @@ void	ft_error(int error_nb, char *error_text)
 
 void	ft_parent_free(t_vars *vars)
 {
-	int	i;
-
-	i = 0;
 	close(vars->infile);
 	close(vars->outfile);
 /*	while (vars->cmd_paths[i])

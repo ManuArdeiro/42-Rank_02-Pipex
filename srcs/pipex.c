@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 20:58:39 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/21 21:05:35 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/23 14:17:57 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ int	main(int argc, char *argv[], char *envp[])
 	vars.pid_one = fork();
 	if (vars.pid_one == 0)
 		ft_first_child(vars, argv, envp);
+	if (waitpid(vars.pid_one, 0, 0) < 0)
+		return (1);
 	vars.pid_two = fork();
 	if (vars.pid_two == 0)
 		ft_second_child(vars, argc, argv, envp);
 	ft_close_pipes(&vars);
-	if (waitpid(vars.pid_one, 0, 0) < 0 || waitpid(vars.pid_two, 0, 0) < 0)
+	if (waitpid(vars.pid_two, 0, 0) < 0)
 		return (1);
 	ft_parent_free(&vars);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:58:40 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/21 21:20:15 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/23 14:10:34 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_cmd_const(char **paths, char *command)
 		path = ft_strjoin(*paths, "/");
 		complete = ft_strjoin(path, command);
 		free(path);
-		if (access(complete, 0) == 0)
+		if (access(complete, F_OK) == 0)
 			return (complete);
 		free(complete);
 		paths++;
@@ -32,7 +32,8 @@ char	*ft_cmd_const(char **paths, char *command)
 
 void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 {
-	int	i;
+	int		i;
+	char	*msg;
 
 	i = -1;
 	vars.infile = open(argv[1], O_RDONLY);
@@ -46,24 +47,27 @@ void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 	vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
 	if (!vars.cmd)
 	{
+		msg = ft_strjoin("command not found: ", vars.cmd_args[0]); 
+		ft_message(127, msg);
+		free(msg);
 		while (vars.cmd_args[++i])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
 		free(vars.cmd);
-		exit(ft_message(EXIT_SUCCESS,
-				ft_strjoin("command not found: ", (char *)argv[1])));
+		exit(127);
 	}
 	execve(vars.cmd, vars.cmd_args, envp);
 }
 
 void	ft_second_child(t_vars vars, int argc, char *argv[], char *envp[])
 {
-	int	i;
+	int		i;
+	char	*msg;
 
 	i = -1;
 	vars.outfile = open(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR, 00644);
 	if (vars.outfile < 0)
-		ft_message(127, "21");
+		ft_message(EXIT_FAILURE, "21");
 	dup2(vars.tube[0], STDIN_FILENO);
 	close(vars.tube[1]);
 	dup2(vars.outfile, STDOUT_FILENO);
@@ -71,12 +75,14 @@ void	ft_second_child(t_vars vars, int argc, char *argv[], char *envp[])
 	vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
 	if (!vars.cmd)
 	{
+		msg = ft_strjoin("command not found: ", vars.cmd_args[0]); 
+		ft_message(127, msg);
+		free(msg);
 		while (vars.cmd_args[++i])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
 		free(vars.cmd);
-		exit (ft_message(127,
-				ft_strjoin("command not found: ", (char *)argv[argc - 1])));
+		exit (127);
 	}
 	execve(vars.cmd, vars.cmd_args, envp);
 }

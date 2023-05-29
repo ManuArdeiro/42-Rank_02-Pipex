@@ -6,17 +6,18 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:48:42 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/21 20:59:20 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/26 19:42:45 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-//	write, read, close, access, pipe, dup, dup2, execve, fork
+//	write, read, close, access, pipe, dup, dup2, execve, fork, errno
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/uio.h>
+# include <errno.h>
 
 //	malloc, free, exit
 # include <stdlib.h>
@@ -66,8 +67,9 @@ void	ft_close_pipes(t_vars *vars);
 int		main(int argc, char *argv[], char *envp[]);
 
 //		tools.c
-int		ft_message(int msg_nb, char *msg_text);
+int		ft_error_message(char *str_1, char *str_2, char *str_3, int nb);
 void	ft_error(int error_nb, char *error_text);
 void	ft_parent_free(t_vars *vars);
+int		ft_init_vars(int argc, char **argv, char **envp, t_vars *vars);
 
 #endif

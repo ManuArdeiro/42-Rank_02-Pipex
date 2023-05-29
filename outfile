@@ -1,0 +1,6 @@
+dup2(vars.outfile, STDOUT_FILENO) = 1 
+ok
+Aquí.
+Aquí.
+vars.cmd = /usr/bin/wc.
+Aquí.

@@ -6,19 +6,24 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:43:45 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/22 12:58:47 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/04/29 02:28:21 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-/*	Function to print an error message and return 1. */
+/*	Function to print an error message to the error output and return nb. */
 
-int	ft_message(int msg_nb, char *msg_text)
+int	ft_error_message(char *str_1, char *str_2, char *str_3, int nb)
 {
-	perror(msg_text);
-	return (msg_nb);
+	ft_putstr_fd("pipex: ", 2);
+	ft_putstr_fd(str_1, 2);
+	ft_putstr_fd(str_2, 2);
+	ft_putstr_fd(str_3, 2);
+	ft_putstr_fd("\n", 2);
+	return (nb);
 }
+
 
 /*	Function to print an error message and exit (with 1). */
 
@@ -33,12 +38,32 @@ void	ft_error(int error_nb, char *error_text)
 
 void	ft_parent_free(t_vars *vars)
 {
+	int	i;
+	
+	i = 0;
 	close(vars->infile);
 	close(vars->outfile);
-/*	while (vars->cmd_paths[i])
+	while (vars->cmd_paths[i])
 	{
 		free(vars->cmd_paths[i]);
 		i++;
-	}*/
+	}
 	free(vars->cmd_paths);
+}
+
+int	ft_init_vars(int argc, char **argv, char **envp, t_vars *vars)
+{
+	vars->pid_one = 0;
+	vars->pid_two = 0;
+	vars->infile = open(argv[1], O_RDONLY, 0644);
+	vars->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (vars->infile < 0 || vars->outfile < 0) 
+		return (ft_error_message(strerror(errno), ": ", (char *)argv[1], 1));
+	if (pipe(vars->tube) < 0)
+		return (ft_error_message("pipe", ": ", strerror(errno), 1));
+	vars->paths = ft_path_search(envp);
+	vars->cmd_paths = ft_split(vars->paths, ':');
+	vars->cmd = 0;
+	vars->cmd_args = 0;
+	return (0);
 }

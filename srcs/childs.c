@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:58:40 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/24 19:45:29 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:36:11 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,63 +33,62 @@ char	*ft_cmd_const(char **paths, char *command)
 void	ft_first_child(t_vars vars, char *argv[], char *envp[])
 {
 	int		i;
-	char	*msg;
 
 	i = -1;
-	vars.infile = open(argv[1], O_RDONLY);
-	if (vars.infile < 0)
-		ft_message(EXIT_SUCCESS,
-			ft_strjoin("no such file or directory: ", (char *)argv[1]));
-	printf("%d\n", vars.tube[1]);
-	close(vars.tube[0]);
-	if (STDOUT_FILENO != vars.tube[1])
-		if (dup2(vars.tube[1], STDOUT_FILENO) < 0)
-			perror("Dup2");
-	printf("aquí\n");
-	dup2(vars.infile, STDIN_FILENO);
-	close(vars.infile);
-	printf("aquí\n");
+	if (dup2(vars.infile, STDIN_FILENO) < 0)
+		ft_error(EXIT_FAILURE, "Dup2");
+	if (dup2(vars.tube[0], STDOUT_FILENO) < 0)
+		ft_error(EXIT_FAILURE, "Dup2");
+	close(vars.tube[1]);
 	vars.cmd_args = ft_split(argv[2], ' ');
-	printf("aquí\n");
 	vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
 	if (!vars.cmd)
 	{
-		msg = ft_strjoin("command not found: ", vars.cmd_args[0]); 
-		ft_message(127, msg);
-		free(msg);
+		ft_error_message("command not found", " : ", vars.cmd_args[0], 127);
+		while (vars.cmd_args[++i])
+			free(vars.cmd_args[i]);
+		free(vars.cmd_args);
+		free(vars.cmd);
+		exit(127); 
+	}
+	if (execve(vars.cmd, vars.cmd_args, envp) < 0)
+		ft_error(ft_error_message(vars.cmd, " : ", strerror(errno), 1),"");
+		
+}
+
+void	ft_second_child(t_vars vars, int argc, char *argv[], char *envp[])
+{
+	int		i;
+	char	*str;
+
+	i = -1;
+	str = "";
+	printf("Aquí. vars.tube[1] = %d \n", vars.tube[1]);
+	if (dup2(vars.tube[1], STDIN_FILENO) < 0)
+		ft_error(EXIT_FAILURE, "Dup2");
+	read(STDIN_FILENO, str, 1000);
+	printf("str = %s \n", str);
+	printf("Aquí. vars.outfile = %d \n", vars.outfile);
+	printf("dup2(vars.outfile, STDOUT_FILENO) = %d \n", dup2(vars.outfile, STDOUT_FILENO));
+	if (dup2(vars.outfile, STDOUT_FILENO) < 0)
+		ft_error(EXIT_FAILURE, "Dup2");
+	write(STDOUT_FILENO, "ok\n", 3);
+	printf("Aquí.\n");
+	close(vars.tube[0]);
+	printf("Aquí.\n");
+	vars.cmd_args = ft_split(argv[argc - 2], ' ');
+	vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
+	printf("vars.cmd = %s.\n", vars.cmd);
+	if (!vars.cmd)
+	{
+		ft_error_message("command not found", " : ", vars.cmd_args[0], 127);
 		while (vars.cmd_args[++i])
 			free(vars.cmd_args[i]);
 		free(vars.cmd_args);
 		free(vars.cmd);
 		exit(127);
 	}
-	execve(vars.cmd, vars.cmd_args, envp);
-}
-
-void	ft_second_child(t_vars vars, int argc, char *argv[], char *envp[])
-{
-	int		i;
-	char	*msg;
-
-	i = -1;
-	vars.outfile = open(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR, 00644);
-	if (vars.outfile < 0)
-		ft_message(EXIT_FAILURE, "21");
-	dup2(vars.tube[0], STDIN_FILENO);
-	close(vars.tube[1]);
-	dup2(vars.outfile, STDOUT_FILENO);
-	vars.cmd_args = ft_split(argv[3], ' ');
-	vars.cmd = ft_cmd_const(vars.cmd_paths, vars.cmd_args[0]);
-	if (!vars.cmd)
-	{
-		msg = ft_strjoin("command not found: ", vars.cmd_args[0]); 
-		ft_message(127, msg);
-		free(msg);
-		while (vars.cmd_args[++i])
-			free(vars.cmd_args[i]);
-		free(vars.cmd_args);
-		free(vars.cmd);
-		exit (127);
-	}
-	execve(vars.cmd, vars.cmd_args, envp);
+	printf("Aquí.\n");
+	if (execve(vars.cmd, vars.cmd_args, envp) < 0)
+		ft_error(ft_error_message(vars.cmd, " : ", strerror(errno), 1),"");
 }

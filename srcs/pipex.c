@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 20:58:39 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/05/06 19:18:32 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/06/13 20:03:25 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,40 +57,26 @@ int	main(int argc, char *argv[], char *envp[])
 		return (ft_error_message("Invalid number of arguments.", "", "", 1));
 	if (ft_init_vars(argc, argv, envp, &vars) < 0)
 		return (ft_init_vars(argc, argv, envp, &vars));
-	dup2(vars.infile, STDIN_FILENO);
+	//dup2(vars.infile, STDIN_FILENO);
 	vars.pid_one = fork();
-//	printf("St vars.pid_one = %d vars.tube[0] = %d \n", vars.pid_one, vars.tube[0]);
-//	printf("St vars.pid_two = %d vars.tube[1] = %d \n", vars.pid_two, vars.tube[1]);
 	if (vars.pid_one == -1)
 		return (ft_error_message("fork", ": ", strerror(errno), 1));
-//	printf("0 vars.pid_one = %d vars.tube[0] = %d \n", vars.pid_one, vars.tube[0]);
-//	printf("0 vars.pid_two = %d vars.tube[1] = %d \n", vars.pid_two, vars.tube[1]);
-	if (vars.pid_one == 0)
+	else if (vars.pid_one == 0)
 		ft_first_child(vars, argv, envp);
-//	printf("1 vars.pid_one = %d vars.tube[0] = %d \n", vars.pid_one, vars.tube[0]);
-//	printf("1 vars.pid_two = %d vars.tube[1] = %d \n", vars.pid_two, vars.tube[1]);
-	close(vars.tube[0]);
-	close(vars.infile);
 	vars.pid_two = fork();
-//	printf("2 vars.pid_one = %d vars.tube[0] = %d \n", vars.pid_one, vars.tube[0]);
-//	printf("2 vars.pid_two = %d vars.tube[1] = %d \n", vars.pid_two, vars.tube[1]);
 	if (vars.pid_two == -1)
 		return (ft_error_message("fork", ": ", strerror(errno), 1));
-//	printf("3 vars.pid_one = %d vars.tube[0] = %d \n", vars.pid_one, vars.tube[0]);
-//	printf("3 vars.pid_two = %d vars.tube[1] = %d \n", vars.pid_two, vars.tube[1]);
-	if (vars.pid_two == 0)
+	else if (vars.pid_two == 0)
 		ft_second_child(vars, argc, argv, envp);
-//	printf("4 vars.pid_one = %d vars.tube[0] = %d \n", vars.pid_one, vars.tube[1]);
-//	printf("4 vars.pid_two = %d vars.tube[1] = %d \n", vars.pid_two, vars.tube[1]);
-	waitpid(vars.pid_two, &status, 0);
-	if (WIFEXITED(status))
-		exit_code = WEXITSTATUS(status);
-//	printf("pid 1 -> status = %d Exit Code : %d\n", status,  exit_code);
+	close(vars.infile);
+	close(vars.outfile);
+	ft_close_pipes(&vars);
 	waitpid(vars.pid_one, &status, 0);
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
-//	printf("pid 2 -> status = %d Exit Code : %d\n", status,  exit_code);
-	ft_close_pipes(&vars);
+	waitpid(vars.pid_two, &status, 0);
+	if (WIFEXITED(status))
+		exit_code = WEXITSTATUS(status);
 	ft_parent_free(&vars);
 	return (exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 20:58:39 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/06 19:29:37 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:17:37 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_path_search(char **envp)
 	int	i;
 
 	i = 0;
+	if (!envp)
+		return (0);
 	while (envp[i])
 	{
 		while (ft_strncmp("PATH=", envp[i], 5))
@@ -50,34 +52,39 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	int		exit_code;
 	int		status;
-	t_vars	vars;
+	t_vars	*vars;
 
 	exit_code = 0;
+	vars = malloc(sizeof(t_vars) * 1);
 	if (argc != 5)
 		return (ft_error_message("Invalid number of arguments.", "", "", 1));
-	exit_code = ft_init_vars(argc, argv, envp, &vars);
+	exit_code = ft_init_vars(argc, argv, envp, vars);
 	if (exit_code != 0)
+	{
+		close(vars->infile);
+		close(vars->outfile);
 		return (exit_code);
-	vars.pid_one = fork();
-	if (vars.pid_one == -1)
-		return (ft_error_message("fork", ": ", strerror(errno), 1));
-	else if (vars.pid_one == 0)
+	}
+	vars->pid_one = fork();
+	if (vars->pid_one < 0)
+		return (ft_error_message("Fork", ": ", strerror(errno), errno));
+	else if (vars->pid_one == 0)
 		ft_first_child(vars, argv, envp);
-	vars.pid_two = fork();
-	if (vars.pid_two == -1)
-		return (ft_error_message("fork", ": ", strerror(errno), 1));
-	else if (vars.pid_two == 0)
+	vars->pid_two = fork();
+	if (vars->pid_two == -1)
+		return (ft_error_message("Fork", ": ", strerror(errno), errno));
+	else if (vars->pid_two == 0)
 		ft_second_child(vars, argc, argv, envp);
-	close(vars.infile);
-	close(vars.outfile);
-	ft_close_pipes(&vars);
-	waitpid(vars.pid_one, &status, 0);
+	ft_close_pipes(vars);
+	close(vars->infile);
+	close(vars->outfile);
+	waitpid(vars->pid_one, &status, 0);
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
-	waitpid(vars.pid_two, &status, 0);
+	waitpid(vars->pid_two, &status, 0);
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
-	ft_parent_free(&vars);
-	//printf("exit code = %d", exit_code);
+	ft_parent_free(vars);
+	exit_code = 2;
 	return (exit_code);
 }

@@ -8,7 +8,7 @@
 		"type": "cppdbg",
 		"request": "launch",
 		"program": "${workspaceFolder}/pipex",
-		"args": ["infile" "cat" "notexisting" "outfile"],
+		"args": ["infile" "grep Now" "wc -w" "outfile"],
 		"stopAtEntry": true,
 		"cwd": "${workspaceFolder}",
 		"environment": [],

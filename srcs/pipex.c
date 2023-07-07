@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 20:58:39 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/06/13 20:03:25 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/06 19:29:37 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ int	main(int argc, char *argv[], char *envp[])
 	exit_code = 0;
 	if (argc != 5)
 		return (ft_error_message("Invalid number of arguments.", "", "", 1));
-	if (ft_init_vars(argc, argv, envp, &vars) < 0)
-		return (ft_init_vars(argc, argv, envp, &vars));
-	//dup2(vars.infile, STDIN_FILENO);
+	exit_code = ft_init_vars(argc, argv, envp, &vars);
+	if (exit_code != 0)
+		return (exit_code);
 	vars.pid_one = fork();
 	if (vars.pid_one == -1)
 		return (ft_error_message("fork", ": ", strerror(errno), 1));
@@ -78,5 +78,6 @@ int	main(int argc, char *argv[], char *envp[])
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
 	ft_parent_free(&vars);
+	//printf("exit code = %d", exit_code);
 	return (exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:43:45 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/04/29 02:28:21 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/06 19:26:22 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ int	ft_init_vars(int argc, char **argv, char **envp, t_vars *vars)
 	vars->pid_one = 0;
 	vars->pid_two = 0;
 	vars->infile = open(argv[1], O_RDONLY, 0644);
+	if (vars->infile < 0) 
+		return (ft_error_message(strerror(errno), ": ", (char *)argv[1], errno));
 	vars->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (vars->infile < 0 || vars->outfile < 0) 
-		return (ft_error_message(strerror(errno), ": ", (char *)argv[1], 1));
+	if (vars->outfile < 0) 
+		return (ft_error_message(strerror(errno), ": ", (char *)argv[1], errno));
 	if (pipe(vars->tube) < 0)
-		return (ft_error_message("pipe", ": ", strerror(errno), 1));
+		return (ft_error_message("pipe", ": ", strerror(errno), errno));
 	vars->paths = ft_path_search(envp);
 	vars->cmd_paths = ft_split(vars->paths, ':');
 	vars->cmd = 0;

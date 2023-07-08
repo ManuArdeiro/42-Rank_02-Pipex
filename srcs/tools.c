@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:43:45 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/07/08 13:10:46 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 20:11:01 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	ft_error_message(char *str_1, char *str_2, char *str_3, int nb)
 	return (nb);
 }
 
-
 /*	Function to print an error message and exit (with 1). */
 
 void	ft_error(int error_nb, char *error_text)
@@ -38,7 +37,7 @@ void	ft_error(int error_nb, char *error_text)
 void	ft_parent_free(t_vars *vars)
 {
 	int	i;
-	
+
 	i = 0;
 	while (vars->cmd_paths[i])
 	{

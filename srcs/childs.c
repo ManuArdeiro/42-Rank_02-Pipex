@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/09 14:58:40 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/07/08 12:40:49 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 20:10:05 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ char	*ft_cmd_const(char **paths, char *command)
 
 /*	Function to count parts; it will be use to extract the command when it 
 	is provided with complete path including directories */
-	
-int		ft_count_parts(char *str, char c)
+
+int	ft_count_parts(char *str, char c)
 {
 	int	i;
 	int	parts;
@@ -77,7 +77,8 @@ void	ft_first_child(t_vars *vars, char *argv[], char *envp[])
 	vars->cmd_args = ft_split(argv[2], ' ');
 	vars->cmd = ft_cmd_const(vars->cmd_paths, vars->cmd_args[0]);
 	if (access (vars->cmd, F_OK) != 0)
-		exit(ft_error_message("command not found", ": ", vars->cmd_args[0], 127));
+		exit(ft_error_message("command not found",
+				": ", vars->cmd_args[0], 127));
 	if (execve(vars->cmd, vars->cmd_args, envp) < 0)
 		ft_error_message(vars->cmd, " : ", strerror(errno), errno);
 }
@@ -96,7 +97,8 @@ void	ft_second_child(t_vars *vars, int argc, char *argv[], char *envp[])
 	vars->cmd_args = ft_split(argv[argc - 2], ' ');
 	vars->cmd = ft_cmd_const(vars->cmd_paths, vars->cmd_args[0]);
 	if (access (vars->cmd, F_OK) != 0)
-		exit(ft_error_message("command not found", ": ", vars->cmd_args[0], 127));
+		exit(ft_error_message("command not found",
+				": ", vars->cmd_args[0], 127));
 	if (execve(vars->cmd, vars->cmd_args, envp) < 0)
 		ft_error_message(vars->cmd, " : ", strerror(errno), errno);
 }

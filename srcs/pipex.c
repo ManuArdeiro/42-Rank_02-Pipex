@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 20:58:39 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/08 15:57:21 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 20:10:41 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	ft_waitpids(t_vars *vars)
 {
 	int	exit_code;
 	int	status;
-	
+
 	waitpid(vars->pid_one, &status, 0);
 	if (WIFEXITED(status))
 		exit_code = WEXITSTATUS(status);
@@ -94,5 +94,6 @@ int	main(int argc, char *argv[], char *envp[])
 	ft_close_pipes(vars);
 	exit_code = ft_waitpids(vars);
 	ft_parent_free(vars);
+	free(vars);
 	return (exit_code);
 }

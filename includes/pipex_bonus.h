@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:30:46 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/21 18:46:52 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 20:03:36 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/uio.h>
+# include <errno.h>
 
 /* malloc, free, exit */
 # include <stdlib.h>
@@ -60,8 +61,9 @@ typedef struct s_vars
 
 //		child_bonus.c
 char	*ft_cmd_const(char **paths, char *cmd);
+int		ft_count_parts(char *str, char c);
 void	ft_pipe_close(t_vars *vars);
-void	ft_childs(t_vars pipex, char **argv, char **envp);
+void	ft_childs(t_vars *vars, char **argv, char **envp);
 
 //		files_bonus.c
 char	*ft_path_search(char **envp);

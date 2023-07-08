@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:50 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/08 12:34:16 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 20:04:26 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_path_search(char **envp)
 {
-	while (ft_strncmp("PATH", *envp, 4))
+	while (ft_strncmp("PATH=", *envp, 5))
 		envp++;
 	return (*envp + 5);
 }
@@ -27,7 +27,7 @@ void	ft_infile(char **argv, t_vars *vars)
 	{
 		vars->infile = open(argv[1], O_RDONLY);
 		if (vars->infile < 0)
-			ft_error("Infile error.\n");
+			ft_error(errno, "Infile error.\n");
 	}
 }
 
@@ -38,5 +38,5 @@ void	ft_outfile(char *outfile, t_vars *vars)
 	else
 		vars->outfile = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 00644);
 	if (vars->outfile < 0)
-		ft_error("Outfile error.\n");
+		ft_error(errno, "Outfile error.\n");
 }

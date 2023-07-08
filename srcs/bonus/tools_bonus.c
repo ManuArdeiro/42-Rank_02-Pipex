@@ -6,13 +6,13 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:40 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/08 12:24:29 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 20:08:09 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex_bonus.h"
 
-/*	Function to print an error message and return 1. */
+/*	Function to print an error text message and return nb provided. */
 
 int	ft_message(int msg_nb, char *msg_text)
 {
@@ -20,7 +20,7 @@ int	ft_message(int msg_nb, char *msg_text)
 	return (msg_nb);
 }
 
-/*	Function to print an error message and exit (with 1). */
+/*	Function to print an error message and exit (with nb provided). */
 
 void	ft_error(int error_nb, char *error_text)
 {
@@ -67,6 +67,6 @@ void	ft_free_mem(t_vars *vars)
 	if (vars->here_doc)
 		unlink(".heredoc_tmp");
 	free(vars->pipe);
-	ft_message("envp error.\n");
+	ft_message(errno, "envp error.\n");
 	exit(-1);
 }

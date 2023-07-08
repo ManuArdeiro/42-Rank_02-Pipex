@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/08 17:43:45 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/07/07 20:17:45 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 13:10:46 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	ft_parent_free(t_vars *vars)
 	int	i;
 	
 	i = 0;
-	close(vars->infile);
-	close(vars->outfile);
 	while (vars->cmd_paths[i])
 	{
 		free(vars->cmd_paths[i]);
@@ -50,25 +48,22 @@ void	ft_parent_free(t_vars *vars)
 	free(vars->cmd_paths);
 }
 
+/*	Function to init vars */
 int	ft_init_vars(int argc, char **argv, char **envp, t_vars *vars)
 {
 	vars->pid_one = 0;
 	vars->pid_two = 0;
 	vars->infile = open(argv[1], O_RDONLY, 0644);
 	if (vars->infile < 0)
-		return (ft_error_message(strerror(errno),
-				": ", (char *)argv[1], errno));
+		ft_error_message(strerror(errno), ": ", (char *)argv[1], errno);
 	vars->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (vars->outfile < 0)
-		return (ft_error_message(strerror(errno),
-				": ", (char *)argv[1], errno));
+		ft_error_message(strerror(errno), ": ", (char *)argv[1], errno);
 	if (pipe(vars->tube) < 0)
 		return (ft_error_message("Pipe", ": ", strerror(errno), errno));
 	vars->paths = ft_path_search(envp);
 	if (vars->paths == 0)
 		return (-1);
 	vars->cmd_paths = ft_split(vars->paths, ':');
-	vars->cmd = 0;
-	vars->cmd_args = 0;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:50 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/19 01:04:17 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:34:16 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_path_search(char **envp)
 
 void	ft_infile(char **argv, t_vars *vars)
 {
-	if (!ft_strncmp("here_doc", argv[1], 9))
+	if (vars->here_doc)
 		ft_here_doc(argv[2], vars);
 	else
 	{

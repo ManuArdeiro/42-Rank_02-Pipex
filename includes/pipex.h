@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 14:48:42 by bcaffere          #+#    #+#             */
-/*   Updated: 2023/07/07 18:54:07 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 13:15:49 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,15 @@ typedef struct s_vars
 
 //		childs.c
 char	*ft_cmd_const(char **paths, char *cmd);
+int		ft_count_parts(char *str, char c);
 void	ft_first_child(t_vars *vars, char *argv[], char *envp[]);
 void	ft_second_child(t_vars *vars, int argc, char *argv[], char *envp[]);
 
 //		pipex.c
 char	*ft_path_search(char **envp);
 void	ft_close_pipes(t_vars *vars);
+void	ft_close_files(t_vars *vars);
+int		ft_waitpids(t_vars *vars);
 int		main(int argc, char *argv[], char *envp[]);
 
 //		tools.c

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:32 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/19 18:28:24 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:24:45 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_double_dup(int zero, int one)
 {
 	dup2(zero, 0);
 	dup2(one, 1);
-}
+
 
 void	ft_childs(t_vars vars, char **argv, char **envp)
 {

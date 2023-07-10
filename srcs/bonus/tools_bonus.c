@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:40 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/08 20:08:09 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/10 01:57:43 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ void	ft_free_mem(t_vars *vars)
 	if (vars->here_doc)
 		unlink(".heredoc_tmp");
 	free(vars->pipe);
-	ft_message(errno, "envp error.\n");
+	ft_message(7, "envp error.\n");
 	exit(-1);
 }

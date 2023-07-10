@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:50 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/08 20:04:26 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/10 01:44:26 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_infile(char **argv, t_vars *vars)
 	{
 		vars->infile = open(argv[1], O_RDONLY);
 		if (vars->infile < 0)
-			ft_error(errno, "Infile error.\n");
+			ft_error(4, "Infile error.\n");
 	}
 }
 
@@ -38,5 +38,5 @@ void	ft_outfile(char *outfile, t_vars *vars)
 	else
 		vars->outfile = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 00644);
 	if (vars->outfile < 0)
-		ft_error(errno, "Outfile error.\n");
+		ft_error(5, "Outfile error.\n");
 }

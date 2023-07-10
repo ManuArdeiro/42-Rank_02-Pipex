@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:33:11 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/08 20:12:52 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/10 01:38:37 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_here_doc(char *limiter, t_vars *vars)
 	line = 0;
 	file = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 00644);
 	if (file < 0)
-		ft_error(vars->infile, "here_doc error.\n");
+		ft_error(3, "here_doc error.\n");
 	while (1)
 	{
 		write(1, "heredoc> ", 9);
@@ -55,6 +55,6 @@ void	ft_here_doc(char *limiter, t_vars *vars)
 	if (vars->infile < 0)
 	{
 		unlink(".heredoc_tmp");
-		ft_error(vars->infile, "here_doc error.\n");
+		ft_error(3, "here_doc error.\n");
 	}
 }

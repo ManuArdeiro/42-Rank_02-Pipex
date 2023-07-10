@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:32 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/08 20:03:50 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/10 19:09:21 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	ft_childs(t_vars *vars, char **argv, char **envp)
 		vars->cmd = ft_cmd_const(vars->cmd_paths, vars->cmd_args[0]);
 		if (!vars->cmd)
 		{
-			printf("Command not found: %s\n", vars->cmd_args[0]);
+			ft_printf("Command not found: %s\n", vars->cmd_args[0]);
 			ft_free_childs(vars);
 			exit(-1);
 		}

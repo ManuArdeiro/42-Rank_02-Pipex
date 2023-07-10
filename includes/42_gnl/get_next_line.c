@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/08 13:18:47 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/04/19 18:21:40 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:36:46 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ char	*ft_get_line(char *container)
 		return (0);
 	i = 0;
 	while (container[i] && container[i] != '\n')
-	{
-		sol[i] = container[i];
-		i++;
-	}
-	if (container[i] == '\n')
 	{
 		sol[i] = container[i];
 		i++;

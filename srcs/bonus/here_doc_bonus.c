@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:33:11 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/10 20:17:25 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:49:31 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_here_doc_arg(char *arg_one, t_vars *vars)
 
 /*	Function to read here_doc input	*/
 
-void	ft_here_doc(char *limiter, t_vars *vars)
+void	ft_here_doc_write(char *limiter, t_vars *vars)
 {
 	int		file;
 	char	*line;
@@ -52,10 +52,16 @@ void	ft_here_doc(char *limiter, t_vars *vars)
 		free(line);
 	}
 	close(file);
+	free(line);
+	ft_here_doc_read(vars);
+}
+
+void	ft_here_doc_read(t_vars *vars)
+{
 	vars->infile = open(".heredoc_tmp", O_RDONLY);
 	if (vars->infile < 0)
 	{
 		unlink(".heredoc_tmp");
 		ft_error(3, "here_doc error.\n");
-	}
+	}	
 }

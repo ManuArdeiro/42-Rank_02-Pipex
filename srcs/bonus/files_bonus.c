@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:50 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/10 01:44:26 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:49:59 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_path_search(char **envp)
 void	ft_infile(char **argv, t_vars *vars)
 {
 	if (vars->here_doc)
-		ft_here_doc(argv[2], vars);
+		ft_here_doc_write(argv[2], vars);
 	else
 	{
 		vars->infile = open(argv[1], O_RDONLY);

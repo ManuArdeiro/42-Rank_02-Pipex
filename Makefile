@@ -6,7 +6,7 @@
 #    By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 20:30:47 by jolopez-          #+#    #+#              #
-#    Updated: 2023/07/07 18:30:49 by jolopez-         ###   ########.fr        #
+#    Updated: 2023/07/13 20:44:24 by jolopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ LIBS		= ./includes/42_libft/libft.a ./includes/42_ft_printf/libftprintf.a ./incl
 
 CC = 		gcc
 
-CFLAGS = 	-Wall -Werror -Wextra -I $(INC) #-g3 -fsanitize=address
+CFLAGS = 	-Wall -Werror -Wextra -I $(INC) -fsanitize=address -g3
 
 all: $(NAME)
 

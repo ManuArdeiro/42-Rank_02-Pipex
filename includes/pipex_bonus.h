@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:30:46 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/10 20:49:20 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/13 18:52:50 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_vars
 //		child_bonus.c
 char	*ft_cmd_const(char **paths, char *cmd);
 int		ft_count_parts(char *str, char c);
-void	ft_pipe_close(t_vars *vars);
+void	ft_double_dup(int in, int out);
 void	ft_childs(t_vars *vars, char **argv, char **envp);
 
 //		files_bonus.c

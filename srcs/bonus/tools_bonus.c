@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:40 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/10 01:57:43 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:53:27 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,6 @@ void	ft_free_parents(t_vars *vars)
 	close(vars->outfile);
 	if (vars->here_doc)
 		unlink(".heredoc_tmp");
-	while (vars->cmd_paths[i])
-	{
-		free(vars->cmd_paths[i]);
-		i++;
-	}
 	free(vars->cmd_paths);
 	free(vars->pipe);
 }

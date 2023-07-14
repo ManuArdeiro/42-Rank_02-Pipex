@@ -6,7 +6,7 @@
 #    By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 20:30:47 by jolopez-          #+#    #+#              #
-#    Updated: 2023/07/13 20:44:24 by jolopez-         ###   ########.fr        #
+#    Updated: 2023/07/14 21:03:07 by jolopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,7 @@ fclean:
 			@echo "$(LIGHT_RED) Cleaning all from gnl... $(WHITE)"
 			cd ./includes/42_gnl && make fclean 
 			@echo "$(LIGHT_RED) Cleaning all from pipex... $(WHITE)"
-			/bin/rm -rf $(NAME) $(BONUS_NAME)
+			/bin/rm -rf $(NAME) $(BONUS_NAME) $(OBJS) $(BONUS_OBJS)
 			@echo "$(LIGHT_RED) Done!! $(WHITE)"
 
 re: 		fclean all

@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:29:52 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/13 21:45:21 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:41:46 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_pipe_creation(t_vars *vars)
 	int	i;
 
 	i = 0;
-	while (i < vars->commands_nb - 1)
+	while (i < vars->pipes_nb - 1)
 	{
 		if (pipe(vars->pipe + 2 * i) < 0)
 			ft_free_parents(vars);
@@ -29,9 +29,12 @@ void	ft_pipe_close(t_vars *vars)
 {
 	int	i;
 
-	i = -1;
-	while (++i < vars->pipes_nb)
+	i = 0;
+	while (i < vars->pipes_nb)
+	{
 		close(vars->pipe[i]);
+		i++;
+	}
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -44,7 +47,7 @@ int	main(int argc, char *argv[], char *envp[])
 	ft_infile(argv, vars);
 	ft_outfile(argv[argc - 1], vars);
 	vars->commands_nb = argc - 3 - vars->here_doc;
-	vars->pipes_nb = 2 * (vars->commands_nb);
+	vars->pipes_nb = 2 * (vars->commands_nb - 1);
 	vars->pipe = (int *)malloc(sizeof(int) * vars->pipes_nb);
 	if (!vars->pipe)
 		ft_error(2, "Mem reservation error.\n");

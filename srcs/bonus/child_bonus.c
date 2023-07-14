@@ -6,7 +6,7 @@
 /*   By: jolopez- <jolopez-@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 17:32:32 by jolopez-          #+#    #+#             */
-/*   Updated: 2023/07/13 21:57:05 by jolopez-         ###   ########.fr       */
+/*   Updated: 2023/07/14 20:50:44 by jolopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,16 @@ void	ft_double_dup(int in, int out)
 void	ft_childs(t_vars *vars, char **argv, char **envp)
 {
 	vars->pid = fork();
-	if (vars->pid == 0)
+	if (!vars->pid)
 	{
 		if (vars->index == 0)
-		{
 			ft_double_dup(vars->infile, vars->pipe[1]);
-			close(vars->pipe[0]);
-		}
 		else if (vars->index == vars->commands_nb - 1)
-		{
-			ft_double_dup(vars->pipe[2 * vars->index], vars->outfile);
-			close(vars->pipe[2 * vars->index]);
-			close(vars->pipe[2 * vars->index + 1]);
-		}
+			ft_double_dup(vars->pipe[2 * vars->index - 2], vars->outfile);
 		else
-		{
-			ft_double_dup(vars->pipe[2 * vars->index],
+			ft_double_dup(vars->pipe[2 * vars->index - 2],
 				vars->pipe[2 * vars->index + 1]);
-			close(vars->pipe[2 * vars->index + 1]);
-		}
+		ft_pipe_close(vars);
 		vars->cmd_args = ft_split(argv[2 + vars->here_doc + vars->index], ' ');
 		vars->cmd = ft_cmd_const(vars->cmd_paths, vars->cmd_args[0]);
 		if (!vars->cmd)
